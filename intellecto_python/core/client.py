@@ -4,10 +4,11 @@ from httpx import Client, AsyncClient
 class IntellectoClient(Client):
     def __init__(
         self,
-        token: str
+        token: str,
+        base_url: str
     ) -> None:
         super().__init__(
-            base_url="https://api-inference.huggingface.co/models",
+            base_url=base_url,
             headers={
                 'Authorization': f'Bearer {token}'
             }
@@ -17,10 +18,11 @@ class IntellectoClient(Client):
 class AsyncIntellectoClient(AsyncClient):
     def __init__(
         self,
-        token: str
+        token: str,
+        base_url: str
     ) -> None:
         super().__init__(
-            base_url="https://api-inference.huggingface.co/models",
+            base_url=base_url,
             headers={
                 'Authorization': f'Bearer {token}'
             }
