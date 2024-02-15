@@ -1,4 +1,4 @@
-from ..base import IntellectoBase, IntellectoModel
+from ..base import *
 from .types import *
 
 
@@ -16,9 +16,32 @@ class IntellectoNLP(IntellectoBase):
 
     def fill(
         self,
-        model: str
+        input: str,
+        model: str,
+        mask: str = '[MASK]',
+        use_cache: bool = True,
+        wait_for_model: bool = False
     ) -> NLPFillModel:
-        pass
+        try:
+            response = self.client.post(
+                url=f'/{model}',
+                json={
+                    'inputs': input.replace('[#]', mask),
+                    'options': {
+                        'use_cache': use_cache,
+                        'wait_for_model': wait_for_model
+                    }
+                }
+            )
+
+            if response.status_code == 200:
+                return NLPFillModel.from_json(response.json())
+            else:
+                self.raise_error_based_on(
+                    status_code=response.status_code
+                )
+        except:
+            raise IntellectoUnknownError()
 
     def summarise(
         self,
@@ -28,9 +51,35 @@ class IntellectoNLP(IntellectoBase):
 
     def qna(
         self,
-        model: str
+        model: str,
+        question: str,
+        context: str,
+        use_cache: bool = True,
+        wait_for_model: bool = False
     ) -> NLPQnaModel:
-        pass
+        try:
+            response = self.client.post(
+                url=f'/{model}',
+                json={
+                    'inputs': {
+                        'question': question,
+                        'context': context
+                    },
+                    'options': {
+                        'use_cache': use_cache,
+                        'wait_for_model': wait_for_model
+                    }
+                }
+            )
+
+            if response.status_code == 200:
+                return NLPQnaModel.from_json(response.json())
+            else:
+                self.raise_error_based_on(
+                    status_code=response.status_code
+                )
+        except:
+            raise IntellectoUnknownError()
 
     def table(
         self,
