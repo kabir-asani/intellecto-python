@@ -142,7 +142,7 @@ It receives the following parameters -
 
 When the library is unable to connect to the API (for example, due to network connection problems or a timeout), a subclass of `IntellectoAPIError` is raised.
 
-When the API returns a non-success status code (that is, 4xx or 5xx response), a subclass of `IntellectoAPIStatusError` is raised, containing `status_code` and `response` properties.
+When the API returns a non-success status code (that is, 4xx or 5xx response), a subclass of `IntellectoAPIStatusError` is raised, containing `status_code`.
 
 Error codes are as followed:
 
