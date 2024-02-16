@@ -1,3 +1,4 @@
+from ..base import IntellectoBase, AsyncIntellectoBase
 from .types import *
 
 

@@ -1,3 +1,4 @@
+from typing import Any
 from dataclasses import dataclass
 
 from ...base import IntellectoBase
@@ -14,8 +15,8 @@ class NLPFillModel(IntellectoBase):
     def from_json(json: Any) -> 'NLPFillModel':
         sequence = str(json.get('sequence'))
         score = str(json.get('score'))
-        token = int(obj.get('token'))
-        token_str = str(obj.get('token_str'))
+        token = int(json.get('token'))
+        token_str = str(json.get('token_str'))
 
         return NLPFillModel(
             score=score,

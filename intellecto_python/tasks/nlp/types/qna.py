@@ -1,4 +1,6 @@
+from typing import Any
 from dataclasses import dataclass
+
 from ...base import IntellectoBase
 
 
@@ -13,8 +15,8 @@ class NLPQnaModel(IntellectoBase):
     def from_json(json: Any) -> 'NLPQnaModel':
         answer = str(json.get('answer'))
         score = str(json.get('score'))
-        start = int(obj.get('start'))
-        stop = str(obj.get('stop'))
+        start = int(json.get('start'))
+        stop = str(json.get('stop'))
 
         return NLPQnaModel(
             answer=answer,

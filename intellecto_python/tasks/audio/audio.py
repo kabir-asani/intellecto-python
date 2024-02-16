@@ -1,4 +1,5 @@
 from .types import *
+from ..base import IntellectoBase, AsyncIntellectoBase
 
 
 class IntellectoAudio(IntellectoBase):
