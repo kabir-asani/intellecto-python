@@ -1,5 +1,5 @@
+from typing import List
 from ...base import IntellectoBase
 
 
-class NLPSimilarityModel(IntellectoBase):
-    pass
+NLPSimilarityModel = float

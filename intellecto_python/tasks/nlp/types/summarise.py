@@ -8,9 +8,5 @@ class NLPSummariseModel(IntellectoBase):
     summary_text: str
 
     @staticmethod
-    def from_json(json: Any) -> 'NLPFillModel':
-        summary_text = str(json.get('summary_text'))
-
-        return NLPSummariseModel(
-            summary_text=summary_text
-        )
+    def from_json(json: Any) -> 'NLPSummariseModel':
+        return NLPSummariseModel(**json)

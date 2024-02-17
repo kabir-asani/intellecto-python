@@ -1,6 +1,5 @@
 from .classify import NLPClassifyModel
 from .conversational import NLPConversationalModel
-from .feature_extract import NLPFeatureExtractModel
 from .fill import NLPFillModel
 from .generate import NLPGenerateModel
 from .qna import NLPQnaModel
