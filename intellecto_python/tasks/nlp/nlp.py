@@ -40,8 +40,8 @@ class IntellectoNLP(IntellectoBase):
                     json = response.json()
                     fills = []
 
-                    for k in json:
-                        fills.append(NLPFillModel.from_json(k))
+                    for data in json:
+                        fills.append(NLPFillModel.from_json(data))
 
                     return fills
                 else:
@@ -53,9 +53,52 @@ class IntellectoNLP(IntellectoBase):
 
     def summarise(
         self,
-        model: str
+        input: str,
+        model: str,
+        min_length: int | None = None,
+        max_legnth: int | None = None,
+        top_k: int | None = None,
+        top_p: int | None = None,
+        temperature: float = 1.0,
+        repetition_penalty: float | None = None,
+        max_time: float | None = None,
+        use_cache: bool = True,
+        wait_for_model: bool = False
     ) -> NLPSummariseModel:
-        pass
+        try:
+            with self.client() as client:
+                response = client.post(
+                    url=f'/{model}',
+                    json={
+                        'inputs': input,
+                        'min_length': min_length,
+                        'max_length': max_legnth,
+                        'top_k': top_k,
+                        'top_p': top_p,
+                        'temperature': temperature,
+                        'repetition_penalty': repetition_penalty,
+                        'max_time': max_time,
+                        'options': {
+                            'use_cache': use_cache,
+                            'wait_for_model': wait_for_model
+                        }
+                    }
+                )
+
+                if response.status_code == 200:
+                    json = response.json()
+                    summaries = []
+
+                    for data in json:
+                        summaries.append(NLPSummariseModel.from_json(data))
+
+                    return summaries
+                else:
+                    self.raise_error(
+                        status_code=response.status_code
+                    )
+        except:
+            raise IntellectoUnknownError()
 
     def qna(
         self,
