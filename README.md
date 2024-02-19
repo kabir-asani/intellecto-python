@@ -4,8 +4,6 @@ A wrapper around Hugging Face's Inference API (written in Python)
 
 ## Usage
 
-**Sync Version**
-
 ```python
 from intellecto import Intellecto
 
@@ -19,25 +17,6 @@ response = client.nlp.generate(
 )
 ```
 
-**Async Version**
-
-```python
-from asyncio import run
-from intellecto import AsyncIntellecto
-
-client = AsyncIntellecto(
-    access_token="xxxxxxxxxxxxxxxxxxxxxxxxxxxx"
-)
-
-async def main() -> None:
-    response = await client.nlp.client.nlp.generate(
-        model="microsoft/phi-2",
-        input='Top 10 programming languages in the world.'
-    )
-
-run(main())
-```
-
 ## Exposed APIs
 
 ### `Intellecto`
@@ -49,18 +28,6 @@ run(main())
 | nlp      | A property of type `IntellectoNLP` that deals with various NLP related tasks       |
 | audio    | A property of type `IntellectoAudio` that deals with various audio related tasks   |
 | vision   | A property of type `IntellectoVision` that deals with various vision related tasks |
-
-### `AsyncIntellecto`
-
-`AsyncIntellecto` has the following properties --
-
-| property | description                                                                             |
-| -------- | --------------------------------------------------------------------------------------- |
-| nlp      | A property of type `AsyncIntellectoNLP` that deals with various NLP related tasks       |
-| audio    | A property of type `AsyncIntellectoAudio` that deals with various audio related tasks   |
-| vision   | A property of type `AsyncIntellectoVision` that deals with various vision related tasks |
-
----
 
 ## Code Structure
 
@@ -101,6 +68,66 @@ It receives the following parameters -
     - [`classify`](https://huggingface.co/docs/api-inference/en/detailed_parameters#image-classification-task)
     - [`detect`](https://huggingface.co/docs/api-inference/en/detailed_parameters#object-detection-task)
 
+## Handling Errors
+
+When the library is unable to connect to the API (for example, due to network connection problems or a timeout), a subclass of `IntellectoAPIError` is raised.
+
+When the API returns a non-success status code (that is, 4xx or 5xx response), a subclass of `IntellectoAPIStatusError` is raised, containing `status_code`.
+
+Error codes are as followed:
+
+| Status Code | Error Type                 |
+| ----------- | -------------------------- |
+| 400         | `BadRequestError`          |
+| 401         | `AuthenticationError`      |
+| 403         | `PermissionDeniedError`    |
+| 404         | `NotFoundError`            |
+| 422         | `UnprocessableEntityError` |
+| 429         | `RateLimitError`           |
+| 5xx         | `InternalServerError`      |
+| N/A         | `APIConnectionError`       |
+
+---
+
+# intellecto-python `async` `WIP`
+
+A wrapper around Hugging Face's Inference API (written in Python) with async support
+
+## Usage
+
+```python
+from asyncio import run
+from intellecto import AsyncIntellecto
+
+client = AsyncIntellecto(
+    access_token="xxxxxxxxxxxxxxxxxxxxxxxxxxxx"
+)
+
+async def main() -> None:
+    response = await client.nlp.client.nlp.generate(
+        model="microsoft/phi-2",
+        input='Top 10 programming languages in the world.'
+    )
+
+run(main())
+```
+
+## Exposed APIs
+
+### `AsyncIntellecto`
+
+`AsyncIntellecto` has the following properties --
+
+| property | description                                                                             |
+| -------- | --------------------------------------------------------------------------------------- |
+| nlp      | A property of type `AsyncIntellectoNLP` that deals with various NLP related tasks       |
+| audio    | A property of type `AsyncIntellectoAudio` that deals with various audio related tasks   |
+| vision   | A property of type `AsyncIntellectoVision` that deals with various vision related tasks |
+
+---
+
+## Code Structure
+
 ### `AsyncIntellectoBase`
 
 `AsyncIntellectoBase` spawns and holds onto an `AsyncIntellectoClient` which aids it in sending network requests to Inference API end points.
@@ -137,22 +164,3 @@ It receives the following parameters -
 3. [`AsyncIntellectoVision`](https://huggingface.co/docs/api-inference/en/detailed_parameters#computer-vision)
     - [`classify`](https://huggingface.co/docs/api-inference/en/detailed_parameters#image-classification-task)
     - [`detect`](https://huggingface.co/docs/api-inference/en/detailed_parameters#object-detection-task)
-
-## Handling Errors
-
-When the library is unable to connect to the API (for example, due to network connection problems or a timeout), a subclass of `IntellectoAPIError` is raised.
-
-When the API returns a non-success status code (that is, 4xx or 5xx response), a subclass of `IntellectoAPIStatusError` is raised, containing `status_code`.
-
-Error codes are as followed:
-
-| Status Code | Error Type                 |
-| ----------- | -------------------------- |
-| 400         | `BadRequestError`          |
-| 401         | `AuthenticationError`      |
-| 403         | `PermissionDeniedError`    |
-| 404         | `NotFoundError`            |
-| 422         | `UnprocessableEntityError` |
-| 429         | `RateLimitError`           |
-| 5xx         | `InternalServerError`      |
-| N/A         | `APIConnectionError`       |
