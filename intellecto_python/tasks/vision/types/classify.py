@@ -1,5 +1,13 @@
-from ...base import IntellectoBase
+from typing import Any
+from dataclasses import dataclass
+from ...base import IntellectoModel
 
 
-class VisionClassifyModel(IntellectoBase):
-    pass
+@dataclass
+class VisionClassifyModel(IntellectoModel):
+    score: float
+    label: str
+
+    @staticmethod
+    def from_json(json: Any) -> 'VisionClassifyModel':
+        return VisionClassifyModel(**json)

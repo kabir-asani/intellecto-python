@@ -1,5 +1,13 @@
-from ...base import IntellectoBase
+from typing import Any
+from dataclasses import dataclass
+from ...base import IntellectoModel
 
 
-class AudioClassifyModel(IntellectoBase):
-    pass
+@dataclass
+class AudioClassifyModel(IntellectoModel):
+    score: float
+    label: str
+
+    @staticmethod
+    def from_json(json: Any) -> 'AudioClassifyModel':
+        return AudioClassifyModel(**json)

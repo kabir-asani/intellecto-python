@@ -1,4 +1,6 @@
-from ..base import IntellectoBase, AsyncIntellectoBase
+from os import PathLike
+from ...core import *
+from ..base import IntellectoBase
 from .types import *
 
 
@@ -16,37 +18,59 @@ class IntellectoVision(IntellectoBase):
 
     def classify(
         self,
-        model: str
+        model: str,
+        path: str | PathLike[str]
     ) -> VisionClassifyModel:
-        pass
+        try:
+            with open(path, "rb") as data, self.client() as client:
+                response = client.post(
+                    url=f'/{model}',
+                    content=data
+                )
+
+                if response.status_code != 200:
+                    self.raise_error(
+                        status_code=response.status_code
+                    )
+
+                json = response.json()
+
+                if isinstance(json, List):
+                    return [
+                        VisionClassifyModel.from_json(data) for data in json
+                    ]
+                else:
+                    return VisionClassifyModel.from_json(json)
+        except IntellectoAPIStatusError as e:
+            raise e
+        except:
+            raise IntellectoUnknownError()
 
     def detect(
         self,
         model: str
     ) -> VisionDetectModel:
-        pass
+        try:
+            with open(path, "rb") as data, self.client() as client:
+                response = client.post(
+                    url=f'/{model}',
+                    content=data
+                )
 
+                if response.status_code != 200:
+                    self.raise_error(
+                        status_code=response.status_code
+                    )
 
-class AsyncIntellectoVision(AsyncIntellectoBase):
-    def __init__(
-        self,
-        token: str
-    ) -> None:
-        """Construct a new asynchronous intellecto vision instance.
-        """
+                json = response.json()
 
-        super().__init__(
-            token=token
-        )
-
-    async def classify(
-        self,
-        model: str
-    ) -> VisionClassifyModel:
-        pass
-
-    async def detect(
-        self,
-        model: str
-    ) -> VisionDetectModel:
-        pass
+                if isinstance(json, List):
+                    return [
+                        VisionDetectModel.from_json(data) for data in json
+                    ]
+                else:
+                    return VisionDetectModel.from_json(json)
+        except IntellectoAPIStatusError as e:
+            raise e
+        except:
+            raise IntellectoUnknownError()

@@ -1,5 +1,9 @@
+from typing import List
 from .types import *
-from ..base import IntellectoBase, AsyncIntellectoBase
+from ..base import *
+from ...core import *
+
+from os import PathLike
 
 
 class IntellectoAudio(IntellectoBase):
@@ -16,37 +20,60 @@ class IntellectoAudio(IntellectoBase):
 
     def transcribe(
         self,
-        model: str
+        model: str,
+        path: str | PathLike[str]
     ) -> AudioTranscribeModel:
-        pass
+        try:
+            with open(path, "rb") as data, self.client() as client:
+                response = client.post(
+                    url=f'/{model}',
+                    content=data
+                )
+
+                if response.status_code != 200:
+                    self.raise_error(
+                        status_code=response.status_code
+                    )
+
+                json = response.json()
+
+                if isinstance(json, List):
+                    return [
+                        AudioTranscribeModel.from_json(data) for data in json
+                    ]
+                else:
+                    return AudioTranscribeModel.from_json(json)
+        except IntellectoAPIStatusError as e:
+            raise e
+        except:
+            raise IntellectoUnknownError()
 
     def classify(
         self,
-        model: str
+        model: str,
+        path: str | PathLike[str]
     ) -> AudioClassifyModel:
-        pass
+        try:
+            with open(path, "rb") as data, self.client() as client:
+                response = client.post(
+                    url=f'/{model}',
+                    content=data
+                )
 
+                if response.status_code != 200:
+                    self.raise_error(
+                        status_code=response.status_code
+                    )
 
-class AsyncIntellectoAudio(AsyncIntellectoBase):
-    def __init__(
-        self,
-        token: str
-    ) -> None:
-        """Construct a new asynchronous intellecto audio instance.
-        """
+                json = response.json()
 
-        super().__init__(
-            token=token
-        )
-
-    async def transcribe(
-        self,
-        model: str
-    ) -> AudioTranscribeModel:
-        pass
-
-    async def classify(
-        self,
-        model: str
-    ) -> AudioClassifyModel:
-        pass
+                if isinstance(json, List):
+                    return [
+                        AudioClassifyModel.from_json(data) for data in json
+                    ]
+                else:
+                    return AudioClassifyModel.from_json(json)
+        except IntellectoAPIStatusError as e:
+            raise e
+        except:
+            raise IntellectoUnknownError()

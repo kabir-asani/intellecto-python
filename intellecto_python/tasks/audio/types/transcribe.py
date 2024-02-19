@@ -1,5 +1,12 @@
-from ...base import IntellectoBase
+from typing import Any
+from dataclasses import dataclass
+from ...base import IntellectoModel
 
 
-class AudioTranscribeModel(IntellectoBase):
-    pass
+@dataclass
+class AudioTranscribeModel(IntellectoModel):
+    text: str
+
+    @staticmethod
+    def from_json(json: Any) -> 'AudioTranscribeModel':
+        return AudioTranscribeModel(**json)

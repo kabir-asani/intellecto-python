@@ -1,11 +1,11 @@
 from typing import Any
 from dataclasses import dataclass
 
-from ...base import IntellectoBase
+from ...base import IntellectoModel
 
 
 @dataclass
-class NLPGenerateModel(IntellectoBase):
+class NLPGenerateModel(IntellectoModel):
     generated_text: str
 
     @staticmethod

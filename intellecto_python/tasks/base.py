@@ -38,42 +38,7 @@ class IntellectoBase:
                 raise IntellectoUnprocessableEntityError()
             case 429:
                 raise IntellectoRateLimitError()
-            case _:
+            case 500:
                 raise IntellectoInternalServerError()
-
-
-class AsyncIntellectoBase:
-    token: str
-
-    def __init__(
-        self,
-        token: str,
-    ) -> None:
-        """Construct a new asynchronous intellecto base instance.
-        """
-        self.token = token
-
-    @property
-    def client(self) -> IntellectoClient:
-        with AsyncIntellectoClient(
-            base_url="https://api-inference.huggingface.co/models",
-            token=self.token
-        ) as client:
-            return client
-
-    def raise_error(self, status_code: int):
-        match status_code:
-            case 400:
-                raise IntellectoBadRequestError()
-            case 401:
-                raise IntellectoAuthenticationError()
-            case 403:
-                raise IntellectoPermissionDeniedError()
-            case 404:
-                raise IntellectoNotFoundError()
-            case 422:
-                raise IntellectoUnprocessableEntityError()
-            case 429:
-                raise IntellectoRateLimitError()
             case _:
-                raise IntellectoInternalServerError()
+                raise IntellectoUnknownError()

@@ -1,10 +1,11 @@
 from typing import Any, List
 from dataclasses import dataclass
-from ...base import IntellectoBase
+
+from ...base import IntellectoModel
 
 
 @dataclass
-class NLPTableModel(IntellectoBase):
+class NLPTableModel(IntellectoModel):
     answer: str
     coordinates: List[List[int]]
     cells: List[str]

@@ -1,11 +1,11 @@
 from typing import Any
 from dataclasses import dataclass
 
-from ...base import IntellectoBase
+from ...base import IntellectoModel
 
 
 @dataclass
-class NLPRecogniseModel(IntellectoBase):
+class NLPRecogniseModel(IntellectoModel):
     entity_group: str
     score: float
     word: str

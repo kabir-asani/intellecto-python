@@ -7,10 +7,6 @@ class IntellectoMissingAccessTokenError(IntellectoError):
     pass
 
 
-class IntellectoAPIConnectionError(IntellectoError):
-    pass
-
-
 class IntellectoUnknownError(IntellectoError):
     pass
 

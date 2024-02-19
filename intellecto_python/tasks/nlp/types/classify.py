@@ -1,10 +1,10 @@
 from dataclasses import dataclass
 from typing import Any
-from ...base import IntellectoBase
+from ...base import IntellectoModel
 
 
 @dataclass
-class NLPClassifyModel(IntellectoBase):
+class NLPClassifyModel(IntellectoModel):
     label: str
     score: float
 

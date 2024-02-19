@@ -1,10 +1,11 @@
 from typing import Any
 from dataclasses import dataclass
-from ...base import IntellectoBase
+
+from ...base import IntellectoModel
 
 
 @dataclass
-class NLPTranslateModel(IntellectoBase):
+class NLPTranslateModel(IntellectoModel):
     translation_text: str
 
     @staticmethod
